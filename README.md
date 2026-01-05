@@ -6,9 +6,10 @@
 
 2. Create data directory
 
-   ```bash
-   mkdir ~/dffb.org
-   ```
+```bash
+mkdir ~/dffb.org
+sudo chown -R 33:33 ~/dffb.org
+```
 
 3. Create backup process
 
@@ -36,19 +37,33 @@
 
 ## Server Management
 
+### Create backup
+
 Create backup of docker volume. Make sure that `~/dffb.org_backup.sh` exists beforehand.
 
 ```bash
 cd && sh dffb.org_backup.sh
 ```
 
-Shutdown server
+### Restore backup
+
+```bash
+docker stop dffb.org-wordpress-prod
+
+mv ~/dffb.org ~/dffb.org_broken
+unzip dffb.org_backups/dffb.org_backup_20260101_020001.zip -d ~/
+sudo chown -R 33:33 ~/dffb.org
+
+docker start dffb.org-wordpress-prod
+```
+
+### Shutdown server
 
 ```bash
 docker stop dffb.org-wordpress-prod && docker rm dffb.org-wordpress-prod
 ```
 
-Run server
+### Run server
 
 ```bash
 export WORDPRESS_DB_PASSWORD=123
@@ -65,7 +80,7 @@ docker run -d \
  wordpress
 ```
 
-Inspect logs
+### Inspect logs
 
 ```bash
 docker logs dffb.org-wordpress-prod -f --tail=100
