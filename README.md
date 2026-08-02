@@ -66,18 +66,19 @@ docker stop dffb.org-wordpress-prod && docker rm dffb.org-wordpress-prod
 ### Run server
 
 ```bash
-export WORDPRESS_DB_PASSWORD=123
+export WORDPRESS_DB_PASSWORD=123 # -> keepass
 
 docker run -d \
- -p 3001:80 \
- -e WORDPRESS_DB_HOST="192.168.1.8:3307" \
- -e WORDPRESS_DB_USER="dffb" \
- -e WORDPRESS_DB_PASSWORD="$WORDPRESS_DB_PASSWORD" \
- -e WORDPRESS_DB_NAME="dffb-wordpress-prod" \
- -v /home/nils/dffb.org:/var/www/html \
- --restart always \
- --name dffb.org-wordpress-prod \
- wordpress
+  -p 3001:80 \
+  -e WORDPRESS_DB_HOST="mariadb12:3306" \
+  -e WORDPRESS_DB_USER="dffb" \
+  -e WORDPRESS_DB_PASSWORD="$WORDPRESS_DB_PASSWORD" \
+  -e WORDPRESS_DB_NAME="dffb-wordpress-prod" \
+  -v /home/nils/dffb.org:/var/www/html \
+  --network dev_default \
+  --restart always \
+  --name dffb.org-wordpress-prod \
+  wordpress
 ```
 
 ### Inspect logs
